@@ -5,31 +5,46 @@
 //  Created by Dino Gačević on 19. 10. 24.
 //
 
+@testable import Employees
 import XCTest
 
-final class EmployeesTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+final class EmployeeTests: XCTestCase {
+    func testEmployeeInitializationWithDefaultValues() {
+        let employee = Employee()
+        
+        XCTAssertEqual(employee.firstName, "Tom", "Default first name should be 'Tom'")
+        XCTAssertEqual(employee.lastName, "Kittycat", "Default last name should be 'Kittycat'")
+        XCTAssertEqual(employee.age, 20, "Default age should be 20")
+        XCTAssertEqual(employee.gender, .male, "Default gender should be male")
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func testEmployeeInitializationWithCustomValues() {
+        let employee = Employee(firstName: "Jane", lastName: "Doe", age: 30, gender: .female)
+        
+        XCTAssertEqual(employee.firstName, "Jane", "First name should be 'Jane'")
+        XCTAssertEqual(employee.lastName, "Doe", "Last name should be 'Doe'")
+        XCTAssertEqual(employee.age, 30, "Age should be 30")
+        XCTAssertEqual(employee.gender, .female, "Gender should be female")
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    
+    func testEmployeeFirstNameUpdate() {
+        var employee = Employee(firstName: "John", lastName: "Doe", age: 40, gender: .male)
+        
+        employee.firstName = "Jane"
+        XCTAssertEqual(employee.firstName, "Jane", "First name should be updated to Jane")
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testEmployeeAgeUpdate() {
+        var employee = Employee(firstName: "John", lastName: "Doe", age: 40, gender: .male)
+        
+        employee.age = 41
+        XCTAssertEqual(employee.age, 41, "Age should be updated to 41")
     }
-
+    
+    func testEmployeeGenderUpdate() {
+        var employee = Employee(firstName: "Sam", lastName: "Brown", age: 22, gender: .male)
+        
+        employee.gender = .female
+        XCTAssertEqual(employee.gender, .female, "Gender should be updated to female")
+    }
 }

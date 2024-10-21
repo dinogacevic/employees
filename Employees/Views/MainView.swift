@@ -13,11 +13,14 @@ struct MainView: View {
     
     @State private var path = [Employee]()
     @State private var sortOption = SortOption.name
+    @State private var searchText = ""
+    
+    @State private var navigateToStatistics = false
     
     var body: some View {
         NavigationStack(path: $path) {
             ZStack {
-                EmployeeListView(sortOption: sortOption)
+                EmployeeListView(sortOption: sortOption, searchString: searchText)
                     .padding(.bottom, 60)
                 
                 VStack {
@@ -35,6 +38,10 @@ struct MainView: View {
             }
             .navigationTitle("Employees")
             .navigationDestination(for: Employee.self, destination: EmployeeDetailsView.init)
+            .navigationDestination(isPresented: $navigateToStatistics) {
+                StatisticsView()
+            }
+            .searchable(text: $searchText)
             .toolbar {
                 Menu("Sort", systemImage: "arrow.up.arrow.down") {
                     Picker("Sort", selection: $sortOption) {
@@ -45,13 +52,11 @@ struct MainView: View {
                     .pickerStyle(.inline)
                 }
                 
-                NavigationLink {
-                    
-                } label: {
-                    Image(systemName: "chart.line.uptrend.xyaxis")
-                        .foregroundStyle(.blue)
+                Button(action: {
+                    navigateToStatistics = true
+                }) {
+                    Label("Statistics", systemImage: "chart.line.uptrend.xyaxis")
                 }
-//                Button("Statistics", systemImage: "chart.line.uptrend.xyaxis", action: showStatistics)
             }
             
         }
@@ -61,10 +66,6 @@ struct MainView: View {
         let employee = Employee()
         modelContext.insert(employee)
         path = [employee]
-    }
-    
-    private func showStatistics() {
-        
     }
 }
 

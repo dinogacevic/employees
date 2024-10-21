@@ -5,13 +5,15 @@
 //  Created by Dino Gačević on 15. 10. 24.
 //
 
+import SwiftData
 import SwiftUI
 
 @main
 struct EmployeesApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            MainView()
         }
+        .modelContainer(for: Employee.self)
     }
 }

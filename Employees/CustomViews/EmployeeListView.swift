@@ -26,6 +26,7 @@ struct EmployeeListView: View {
                         }
                     }
                 }
+                .accessibilityIdentifier("Employee-\(employee)")
             }
             .onDelete(perform: deleteEmployee)
         }
@@ -33,8 +34,14 @@ struct EmployeeListView: View {
         .preferredColorScheme(.dark)
     }
     
-    init(sortOption: SortOption) {
-        _employees = Query(sort: sortOption.sortDescriptors)
+    init(sortOption: SortOption, searchString: String) {
+        _employees = Query(filter: #Predicate {
+            if searchString.isEmpty {
+                return true
+            } else {
+                return $0.firstName.localizedStandardContains(searchString) || $0.lastName.localizedStandardContains(searchString)
+            }
+        }, sort: sortOption.sortDescriptors)
     }
     
     func deleteEmployee(_ indexSet: IndexSet) {
@@ -46,5 +53,5 @@ struct EmployeeListView: View {
 }
 
 #Preview {
-    EmployeeListView(sortOption: .name)
+    EmployeeListView(sortOption: .name, searchString: "")
 }
